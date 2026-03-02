@@ -38,5 +38,7 @@ jobs:
 
       - name: Static analysis (cppcheck)
         run: |
-          cppcheck --enable=all --error-exitcode=1 \
-                   sysfs-editor/sysfs-editor.c
+          cppcheck --enable=all \
+           --suppress=missingIncludeSystem \
+           --error-exitcode=1 \
+           src/
