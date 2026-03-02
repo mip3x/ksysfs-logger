@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            linux-headers-$(uname -r) \
+            cppcheck \
+            perl
+
+      - name: Build kernel module
+        run: |
+          make -C /lib/modules/$(uname -r)/build \
+               M=${{ github.workspace }}/kernel-module \
+               modules
+
+      - name: Kernel style check
+        run: |
+          perl /usr/src/linux-headers-$(uname -r)/scripts/checkpatch.pl \
+               --no-tree --strict \
+               kernel-module/ksysfs-logger.c
+
+      - name: Build user-space program
+        run: |
+          make -C sysfs-editor
+
+      - name: Static analysis (cppcheck)
+        run: |
+          cppcheck --enable=all \
+           --suppress=missingIncludeSystem \
+           --error-exitcode=1 \
+           sysfs-editor
