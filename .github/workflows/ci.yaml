@@ -23,7 +23,7 @@ jobs:
       - name: Build kernel module
         run: |
           make -C /lib/modules/$(uname -r)/build \
-               M=${{ github.workspace }}/kernel_module \
+               M=${{ github.workspace }}/kernel-module \
                modules
 
       - name: Kernel style check
