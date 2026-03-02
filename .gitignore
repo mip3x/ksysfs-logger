@@ -57,6 +57,11 @@ modules.builtin
 !.github/**
 
 #
+# clang-format is also an axception
+#
+!.clang-format
+
+#
 # Generated include files
 #
 include/config

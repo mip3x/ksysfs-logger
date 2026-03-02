@@ -1,0 +1,34 @@
+---
+Language: C
+BasedOnStyle: LLVM
+
+UseTab: Always
+TabWidth: 8
+IndentWidth: 8
+
+ColumnLimit: 80
+
+BreakBeforeBraces: Linux
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+BinPackParameters: false
+
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+DerivePointerAlignment: false
+PointerAlignment: Right
+
+AlignAfterOpenBracket: DontAlign
+
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignOperands: false
+
+ContinuationIndentWidth: 8
+
+SortIncludes: Never
+...
