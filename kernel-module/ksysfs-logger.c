@@ -45,7 +45,7 @@ filename_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 }
 
 static ssize_t filename_store(struct kobject *kobj,
-	struct kobj_attribute *attr,
+			      struct kobj_attribute *attr,
 	const char *buf,
 	size_t count)
 {
@@ -89,7 +89,7 @@ period_ms_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 }
 
 static ssize_t period_ms_store(struct kobject *kobj,
-	struct kobj_attribute *attr,
+			       struct kobj_attribute *attr,
 	const char *buf,
 	size_t count)
 {
@@ -140,9 +140,8 @@ static void write_work_func(struct work_struct *work)
 	if (IS_ERR(file)) {
 		long error = PTR_ERR(file);
 
-		pr_err("filp_open(%s) failed: %ld (%s). Make sure directory "
-		       "'%s' exists\n",
-			fullpath,
+		pr_err("filp_open(%s) failed: %ld (%s). Make sure directory '%s' exists\n",
+		       fullpath,
 			error,
 			errname(error),
 			BASEPATH);
@@ -154,7 +153,7 @@ static void write_work_func(struct work_struct *work)
 
 	// concatenate log message
 	len = scnprintf(databuf,
-		sizeof(databuf),
+			sizeof(databuf),
 		"Hello from kernel module (%d)\n",
 		counter_value);
 
