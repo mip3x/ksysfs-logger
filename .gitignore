@@ -53,6 +53,8 @@ modules.builtin
 #
 !.gitignore
 !.mailmap
+!.github/
+!.github/**
 
 #
 # Generated include files
