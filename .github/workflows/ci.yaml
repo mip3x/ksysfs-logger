@@ -30,7 +30,7 @@ jobs:
         run: |
           perl /usr/src/linux-headers-$(uname -r)/scripts/checkpatch.pl \
                --no-tree --strict \
-               kernel_module/ksysfs-logger.c
+               kernel-module/ksysfs-logger.c
 
       - name: Build user-space program
         run: |
