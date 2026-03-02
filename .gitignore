@@ -82,3 +82,5 @@ GTAGS
 *.orig
 *~
 \#*#
+
+*sysfs-editor
