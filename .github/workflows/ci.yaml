@@ -41,4 +41,4 @@ jobs:
           cppcheck --enable=all \
            --suppress=missingIncludeSystem \
            --error-exitcode=1 \
-           src/
+           sysfs-editor
