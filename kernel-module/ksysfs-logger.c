@@ -12,7 +12,7 @@
 #define TIMEOUT_MS 5000
 
 #define BASEPATH "/var/tmp/test_module"
-static char filename[255] = "log";
+static char filename[NAME_MAX] = "log";
 
 static struct timer_list write_msg_timer;
 static atomic_t counter = ATOMIC_INIT(0);
@@ -20,7 +20,7 @@ static atomic_t counter = ATOMIC_INIT(0);
 static struct work_struct write_work;
 
 static void write_work_func(struct work_struct *work) {
-    char fullpath[sizeof(BASEPATH) + sizeof(filename)];
+    char fullpath[PATH_MAX];
     struct file *file;
     loff_t pos = 0;
     ssize_t bytes_written;
@@ -32,10 +32,16 @@ static void write_work_func(struct work_struct *work) {
     snprintf(fullpath, sizeof(fullpath), "%s/%s", BASEPATH, filename);
 
     // open file
-    file = filp_open(fullpath, O_RDWR | O_CREAT | O_APPEND, 0644);
+    file = filp_open(fullpath, O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (IS_ERR(file)) {
         long error = PTR_ERR(file);
-        pr_err("filp_open(%s) failed: %ld (%s)\n", fullpath, error, errname(error));
+        pr_err(
+            "filp_open(%s) failed: %ld (%s). Make sure directory '%s' exists\n",
+            fullpath,
+            error,
+            errname(error),
+            BASEPATH
+        );
         return;
     }
 
@@ -43,13 +49,13 @@ static void write_work_func(struct work_struct *work) {
     counter_value = atomic_inc_return(&counter);
 
     // concatenate log message
-    len = snprintf(databuf, sizeof(databuf), "Hello from kernel module (%d)\n", counter_value);
+    len = scnprintf(databuf, sizeof(databuf), "Hello from kernel module (%d)\n", counter_value);
     pr_info("%s", databuf);
 
     // write file
     bytes_written = kernel_write(file, databuf, len, &pos);
     if (bytes_written < 0) {
-        pr_err("kernel_write failed: %ld\n", bytes_written);
+        pr_err("kernel_write failed: %zd\n", bytes_written);
         filp_close(file, NULL);
         return;
     }
